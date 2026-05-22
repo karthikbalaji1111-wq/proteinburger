@@ -44,10 +44,55 @@ video {
 .story-parallax,
 .product-card,
 .menu-shell,
-.health-heart-visual {
+.health-heart-visual,
+.homepage-foreground {
   backface-visibility: hidden;
   transform: translateZ(0);
-  will-change: transform, opacity, filter;
+}
+
+.hero-video {
+  will-change: transform, opacity;
+}
+
+.story-reveal,
+.story-parallax,
+.product-card,
+.menu-shell {
+  will-change: transform, opacity;
+}
+
+.homepage-bg-video .hero-video {
+  opacity: 0.48;
+  filter: none;
+}
+
+.homepage-foreground {
+  position: relative;
+  z-index: 10;
+  isolation: isolate;
+}
+
+.menu-shell,
+.menu-page {
+  opacity: 1;
+  visibility: visible;
+}
+
+html.route-menu,
+html.route-menu body {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: auto;
+  min-height: 100%;
+}
+
+html.route-menu .lenis,
+html.route-menu .lenis-smooth {
+  overflow: visible !important;
+}
+
+.detail-panel {
+  transform: translateZ(0);
 }
 
 ::selection {
@@ -268,9 +313,44 @@ video {
   }
 }
 
-/* Atmospheric Custom Adjustments */
-.homepage-bg-video {
-  backface-visibility: hidden;
-  transform: translate3d(0, 0, 0);
-  will-change: transform, opacity, filter;
+/* Cinematic Studio Spotlight & Interactive Plate */
+.studio-spotlight {
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(240, 199, 111, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 25% 35%, rgba(188, 50, 42, 0.04) 0%, transparent 50%),
+    #030405;
 }
+
+.reflective-plate {
+  position: absolute;
+  bottom: 12%;
+  left: 50%;
+  transform: translate3d(-50%, 0, 0) rotateX(72deg);
+  width: clamp(240px, 30vw, 360px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08), rgba(10, 8, 5, 0.95) 75%);
+  border: 1.5px solid rgba(240, 199, 111, 0.16);
+  box-shadow: 
+    0 25px 60px rgba(0, 0, 0, 0.95),
+    inset 0 0 35px rgba(240, 199, 111, 0.03),
+    0 0 70px rgba(240, 199, 111, 0.05);
+  z-index: 1;
+  pointer-events: none;
+  transform-style: preserve-3d;
+}
+
+.burger-shadow {
+  position: absolute;
+  bottom: 13.5%;
+  left: 50%;
+  transform: translate3d(-50%, 0, 0) rotateX(72deg);
+  width: clamp(200px, 25vw, 300px);
+  aspect-ratio: 1.1;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(0, 0, 0, 0.96) 0%, transparent 72%);
+  z-index: 2;
+  pointer-events: none;
+  filter: blur(8px);
+}
+

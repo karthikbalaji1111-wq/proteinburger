@@ -1,0 +1,11 @@
+After you run npm run dev (or double-click start.command), open:
+
+http://127.0.0.1:5190/
+
+Menu page (use this exact link):
+
+http://127.0.0.1:5190/#/menu
+
+If the server says port is busy, run in Terminal:
+  lsof -ti:5190 | xargs kill -9
+Then run npm run dev again.

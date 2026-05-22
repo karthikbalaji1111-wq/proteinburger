@@ -1,0 +1,10 @@
+{
+  "name": "proteinburger",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev --prefix protein-burgers",
+    "build": "npm run build --prefix protein-burgers",
+    "preview": "npm run preview --prefix protein-burgers",
+    "install:app": "npm install --prefix protein-burgers"
+  }
+}
