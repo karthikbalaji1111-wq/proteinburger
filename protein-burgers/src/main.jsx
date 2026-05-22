@@ -276,26 +276,27 @@ const sauces = [
 function useSmoothScroll() {
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.35,
+      duration: 1.5,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      wheelMultiplier: 0.9,
-      touchMultiplier: 1.15,
+      wheelMultiplier: 0.95,
+      touchMultiplier: 1.2,
+      lerp: 0.08,
     });
 
     lenis.on('scroll', ScrollTrigger.update);
 
-    let rafId;
-    const raf = (time) => {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
+    const updateLenis = (time) => {
+      lenis.raf(time * 1000);
     };
 
-    rafId = requestAnimationFrame(raf);
+    gsap.ticker.add(updateLenis);
+    gsap.ticker.lagSmoothing(0);
+
     window.lenis = lenis;
 
     return () => {
-      cancelAnimationFrame(rafId);
+      gsap.ticker.remove(updateLenis);
       delete window.lenis;
       lenis.destroy();
     };
@@ -347,24 +348,27 @@ function App() {
 function HomePage({ navigate }) {
   const rootRef = useRef(null);
   const heroRef = useRef(null);
+  const videoRef = useRef(null);
+  const videoContainerRef = useRef(null);
 
   useLayoutEffect(() => {
     let removeMetadataListener;
-    let heroVideoTween;
+    let animationFrameId;
+
     const context = gsap.context(() => {
-      const heroVideo = heroRef.current?.querySelector('.hero-video');
+      const heroVideo = videoRef.current;
+      const videoContainer = videoContainerRef.current;
 
-      if (heroVideo) {
-        const setupVideoScrub = () => {
-          const duration = heroVideo.duration || 1;
-
-          heroVideo.pause();
-          heroVideo.currentTime = 0.04;
-
-          heroVideoTween?.scrollTrigger?.kill();
-          heroVideoTween?.kill();
-          heroVideoTween = gsap.to(heroVideo, {
-            currentTime: Math.max(duration - 0.12, 0),
+      // 1. Cinematic Background Atmosphere Scroll Controls
+      if (videoContainer) {
+        gsap.fromTo(videoContainer,
+          {
+            opacity: 0.7,
+            filter: 'blur(0px)',
+          },
+          {
+            opacity: 0.18,
+            filter: 'blur(8px)',
             ease: 'none',
             scrollTrigger: {
               trigger: heroRef.current,
@@ -372,8 +376,63 @@ function HomePage({ navigate }) {
               end: 'bottom top',
               scrub: true,
               invalidateOnRefresh: true,
-            },
+            }
+          }
+        );
+      }
+
+      if (heroVideo) {
+        gsap.fromTo(heroVideo,
+          { scale: 1.0 },
+          {
+            scale: 1.15,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: rootRef.current,
+              start: 'top top',
+              end: 'bottom bottom',
+              scrub: true,
+              invalidateOnRefresh: true,
+            }
+          }
+        );
+
+        // 2. High-Performance Scroll-Controlled Lerped Video Scrubbing
+        const setupVideoScrub = () => {
+          const duration = heroVideo.duration || 1;
+
+          heroVideo.pause();
+          heroVideo.currentTime = 0.05;
+
+          let targetTime = 0.05;
+          let currentEasedTime = 0.05;
+          const ease = 0.06;
+
+          const trigger = ScrollTrigger.create({
+            trigger: rootRef.current,
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: true,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              targetTime = self.progress * (duration - 0.15);
+            }
           });
+
+          const updateVideoFrame = () => {
+            if (heroVideo.readyState >= 2) {
+              currentEasedTime += (targetTime - currentEasedTime) * ease;
+              const clampedTime = Math.max(0.02, Math.min(duration - 0.1, currentEasedTime));
+              heroVideo.currentTime = clampedTime;
+            }
+            animationFrameId = requestAnimationFrame(updateVideoFrame);
+          };
+
+          updateVideoFrame();
+
+          removeMetadataListener = () => {
+            trigger.kill();
+          };
         };
 
         if (heroVideo.readyState >= 1) {
@@ -386,19 +445,7 @@ function HomePage({ navigate }) {
         }
       }
 
-      gsap.to('.hero-video', {
-        scale: 1.16,
-        yPercent: 10,
-        opacity: 0.32,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1.1,
-        },
-      });
-
+      // Parallax text inside Hero
       gsap.to('.hero-copy', {
         yPercent: -18,
         scale: 0.96,
@@ -412,6 +459,7 @@ function HomePage({ navigate }) {
         },
       });
 
+      // Story sections reveal
       gsap.utils.toArray('.story-section').forEach((section) => {
         gsap.fromTo(
           section,
@@ -459,6 +507,7 @@ function HomePage({ navigate }) {
         }
       });
 
+      // Floating animations
       gsap.to('.oil-drop', {
         y: -28,
         x: 10,
@@ -481,8 +530,7 @@ function HomePage({ navigate }) {
 
     return () => {
       removeMetadataListener?.();
-      heroVideoTween?.scrollTrigger?.kill();
-      heroVideoTween?.kill();
+      cancelAnimationFrame(animationFrameId);
       context.revert();
     };
   }, []);
@@ -496,6 +544,28 @@ function HomePage({ navigate }) {
       transition={{ duration: 0.45 }}
     >
       <TopBar navigate={navigate} />
+
+      {/* Persistent Atmospheric Background Video */}
+      <div
+        ref={videoContainerRef}
+        className="homepage-bg-video fixed inset-0 -z-50 h-full w-full overflow-hidden pointer-events-none"
+        style={{ opacity: 0.7 }}
+      >
+        <video
+          ref={videoRef}
+          className="h-full w-full object-cover"
+          src="/media/hero-burger.mp4"
+          muted
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+        />
+        {/* Dark luxury atmospheric overlays */}
+        <div className="absolute inset-0 bg-[#030405]/35" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(0,0,0,0)_20%,rgba(3,4,5,0.92)_85%)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#030405]/40 to-[#030405]" />
+      </div>
+
       <HeroSection heroRef={heroRef} navigate={navigate} />
       <StoryIntro />
       <NoPalmOilSection />
@@ -538,14 +608,6 @@ function TopBar({ navigate, variant = 'glass' }) {
 function HeroSection({ heroRef, navigate }) {
   return (
     <section ref={heroRef} className="relative isolate min-h-screen overflow-hidden">
-      <video
-        className="hero-video absolute inset-0 h-full w-full object-cover opacity-60"
-        src="/media/hero-burger.mp4"
-        muted
-        playsInline
-        preload="auto"
-        aria-hidden="true"
-      />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(255,190,93,0.16),transparent_31%),linear-gradient(180deg,rgba(3,4,5,0.42)_0%,rgba(3,4,5,0.82)_63%,#030405_100%)]" />
       <div className="smoke-layer opacity-75" />
 
@@ -1034,29 +1096,145 @@ function MenuPage({ navigate }) {
   );
 }
 
+function SteamEffect({ active }) {
+  const canvasRef = useRef(null);
+  const animationRef = useRef(null);
+  const particlesRef = useRef([]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let width = canvas.offsetWidth;
+    let height = canvas.offsetHeight;
+    canvas.width = width;
+    canvas.height = height;
+
+    const handleResize = () => {
+      if (!canvas) return;
+      width = canvas.offsetWidth;
+      height = canvas.offsetHeight;
+      canvas.width = width;
+      canvas.height = height;
+    };
+    window.addEventListener('resize', handleResize);
+
+    const particles = [];
+    particlesRef.current = particles;
+
+    const maxParticles = 35;
+
+    const animate = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      if (active && particles.length < maxParticles && Math.random() < 0.18) {
+        particles.push({
+          x: width / 2 + (Math.random() - 0.5) * 40,
+          y: height * 0.72 + (Math.random() - 0.5) * 15,
+          vx: (Math.random() - 0.5) * 0.45,
+          vy: -0.65 - Math.random() * 0.8,
+          alpha: 0.16 + Math.random() * 0.1,
+          size: 8 + Math.random() * 8,
+          growth: 0.28 + Math.random() * 0.22,
+          life: 0,
+          maxLife: 100 + Math.random() * 80,
+          angle: Math.random() * Math.PI * 2,
+          speedAngle: (Math.random() - 0.5) * 0.05,
+        });
+      }
+
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.life++;
+
+        p.y += p.vy;
+        p.x += p.vx + Math.sin(p.angle) * 0.35;
+        p.angle += p.speedAngle;
+        p.size += p.growth;
+
+        const lifePercent = p.life / p.maxLife;
+        if (lifePercent < 0.25) {
+          p.alpha = (p.life / (p.maxLife * 0.25)) * p.alpha;
+        } else {
+          p.alpha = (1 - lifePercent) * 0.24;
+        }
+
+        if (p.life >= p.maxLife || p.y < -p.size || p.alpha <= 0) {
+          particles.splice(i, 1);
+          continue;
+        }
+
+        ctx.beginPath();
+        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
+        grad.addColorStop(0, `rgba(255, 235, 215, ${p.alpha * 1.15})`);
+        grad.addColorStop(0.35, `rgba(240, 240, 240, ${p.alpha * 0.65})`);
+        grad.addColorStop(1, 'rgba(240, 240, 240, 0)');
+
+        ctx.fillStyle = grad;
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      cancelAnimationFrame(animationRef.current);
+    };
+  }, [active]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="pointer-events-none absolute inset-0 z-20 h-full w-full opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+      style={{ mixBlendMode: 'screen' }}
+    />
+  );
+}
+
 function ProductCard({ item, index = 0 }) {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 28, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.55, delay: index * 0.055, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={{ y: -8 }}
+      whileHover={{ y: -10, scale: 1.025 }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       className="product-card group relative overflow-hidden rounded-[8px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.09),rgba(255,255,255,0.035))] shadow-glass backdrop-blur-xl"
     >
-      <div className="absolute inset-0 opacity-0 transition duration-500 group-hover:opacity-100">
-        <div className="absolute inset-x-5 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(255,232,181,0.72),transparent)]" />
-        <div className="absolute -right-20 -top-20 h-48 w-48 rounded-full bg-[#d64135]/12 blur-3xl" />
+      {/* Luxury Cinematic Glows & Overlays */}
+      <div className="absolute inset-0 opacity-0 transition duration-700 group-hover:opacity-100 pointer-events-none z-10">
+        <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(240,199,111,0.85),transparent)]" />
+        <div className="absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(90deg,transparent,rgba(214,65,53,0.35),transparent)]" />
+        <div className="absolute -left-16 -bottom-16 h-36 w-36 rounded-full bg-[#f0c76f]/05 blur-3xl" />
+        <div className="absolute -right-16 -top-16 h-36 w-36 rounded-full bg-[#d64135]/08 blur-3xl" />
       </div>
 
-      <div className="relative aspect-[1.05] overflow-hidden bg-black">
+      {/* Gloss Reflection Sweep */}
+      <div className="reflection-sweep" />
+
+      {/* Image Container with Custom SteamEffect */}
+      <div className="relative aspect-[1.05] overflow-hidden bg-black z-20">
         <img
           src={item.image}
           alt={item.name}
           loading="lazy"
-          className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+          className="h-full w-full object-cover transition duration-700 group-hover:scale-106 opacity-[0.88] group-hover:opacity-100"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0)_48%,rgba(0,0,0,0.82)_100%)]" />
-        <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+        
+        {/* Soft Volumetric Steam Particle Canvas */}
+        <SteamEffect active={isHovered} />
+
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0)_48%,rgba(0,0,0,0.82)_100%)] z-20" />
+        <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between z-30">
           <span className="rounded-full border border-white/12 bg-black/35 px-3 py-1.5 text-xs font-bold text-white/80 backdrop-blur-md">
             {item.protein} protein
           </span>
@@ -1066,9 +1244,10 @@ function ProductCard({ item, index = 0 }) {
         </div>
       </div>
 
-      <div className="relative p-5">
+      {/* Product Information */}
+      <div className="relative p-5 z-20">
         <div className="flex min-h-[3.25rem] items-start justify-between gap-3">
-          <h2 className="text-pretty text-xl font-black leading-tight">{item.name}</h2>
+          <h2 className="text-pretty text-xl font-black leading-tight group-hover:text-[#ffe1a0] transition-colors duration-300">{item.name}</h2>
           <span className="shrink-0 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[11px] font-semibold text-white/56">
             {item.calories}
           </span>

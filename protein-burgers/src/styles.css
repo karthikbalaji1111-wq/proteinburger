@@ -220,3 +220,57 @@ video {
     object-position: center center;
   }
 }
+
+/* Cinematic Product Card Hover & Glow Extensions */
+.product-card {
+  transition: border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.product-card:hover {
+  border-color: rgba(240, 199, 111, 0.35);
+  box-shadow: 
+    0 12px 40px -10px rgba(0, 0, 0, 0.8),
+    0 0 30px -5px rgba(240, 199, 111, 0.08);
+}
+
+.reflection-sweep {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 30;
+  opacity: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.04) 40%,
+    rgba(255, 255, 255, 0.18) 50%,
+    rgba(255, 255, 255, 0.04) 60%,
+    transparent 70%
+  );
+  transform: translateX(-100%) skewX(-20deg);
+}
+
+.product-card:hover .reflection-sweep {
+  opacity: 1;
+  animation: reflection-sweep 1.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes reflection-sweep {
+  0% {
+    transform: translateX(-100%) skewX(-20deg);
+  }
+  100% {
+    transform: translateX(60%) skewX(-20deg);
+  }
+}
+
+/* Atmospheric Custom Adjustments */
+.homepage-bg-video {
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  will-change: transform, opacity, filter;
+}
