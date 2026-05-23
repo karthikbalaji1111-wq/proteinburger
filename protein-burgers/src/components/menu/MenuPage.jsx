@@ -63,7 +63,13 @@ export function MenuPage({ navigate }) {
 
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {activeCategory.items.map((item, index) => (
-              <ProductCard key={item.name} item={item} index={index} onSelect={setSelectedItem} />
+              <ProductCard
+                key={item.name}
+                item={item}
+                index={index}
+                onSelect={setSelectedItem}
+                isBurger={activeCategory.title === 'Burgers'}
+              />
             ))}
           </div>
         </section>

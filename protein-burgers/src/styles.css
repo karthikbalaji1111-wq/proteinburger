@@ -78,17 +78,39 @@ video {
   visibility: visible;
 }
 
-html.route-menu,
-html.route-menu body {
-  overflow-x: hidden;
-  overflow-y: auto;
+html.lenis,
+html.lenis body {
   height: auto;
-  min-height: 100%;
 }
 
-html.route-menu .lenis,
-html.route-menu .lenis-smooth {
-  overflow: visible !important;
+html.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.cart-trigger {
+  transform: translateZ(0);
+}
+
+.cart-drawer {
+  transform: translateZ(0);
+}
+
+.cart-line-item {
+  transition:
+    border-color 0.35s ease,
+    background-color 0.35s ease,
+    transform 0.35s ease;
+}
+
+.cart-line-item:hover {
+  border-color: rgba(240, 199, 111, 0.22);
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+@media (max-width: 640px) {
+  .cart-drawer {
+    max-width: 100%;
+  }
 }
 
 .detail-panel {
