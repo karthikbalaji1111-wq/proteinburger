@@ -119,7 +119,7 @@ export function CartDrawer() {
                                 : line.product.description}
                           </p>
 
-                          {!line.customizations && line.type === 'menu' ? (
+                          {!line.customizations && (line.type === 'Burgers' || line.type === 'menu') ? (
                             <label className="mt-2 flex cursor-pointer items-center gap-2">
                               <input
                                 type="checkbox"
