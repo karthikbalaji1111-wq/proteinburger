@@ -95,7 +95,7 @@ export function BurgerStackPreview({ selections, compact = false, lastChanged })
         transition={{ type: 'spring', stiffness: 120, damping: 18 }}
         style={{ transformStyle: 'preserve-3d' }}
       >
-        <AnimatePresence mode="popLayout">
+        <AnimatePresence>
           <Layer top={compact ? 58 : 365} z={1} changedKey={`bottom-${lastChanged}`}>
             <BottomBunSVG className="h-full w-full drop-shadow-[0_18px_22px_rgba(0,0,0,0.45)]" />
           </Layer>
