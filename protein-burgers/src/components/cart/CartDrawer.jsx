@@ -1,9 +1,12 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Minus, Plus, ShoppingBag, Trash2, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { BurgerStackPreview } from '../builder/BurgerStackPreview';
 import { useCart } from '../../context/CartContext';
 import { EXTRA_CHEESE_PRICE, formatPriceRupee } from '../../utils/price';
 
 export function CartDrawer() {
+  const navigate = useNavigate();
   const {
     lines,
     isOpen,
@@ -16,6 +19,11 @@ export function CartDrawer() {
     grandTotalLabel,
     grandTotal,
   } = useCart();
+
+  const goToCheckout = () => {
+    closeCart();
+    navigate('/checkout');
+  };
 
   return (
     <AnimatePresence>
@@ -68,18 +76,28 @@ export function CartDrawer() {
                   </p>
                 </div>
               ) : (
-                <ul className="space-y-4">
+                <motion.ul layout className="space-y-4">
                   {lines.map((line) => (
-                    <li
+                    <motion.li
                       key={line.key}
+                      layout
+                      initial={{ opacity: 0, x: 24 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 24 }}
                       className="cart-line-item rounded-[8px] border border-white/10 bg-white/[0.04] p-3"
                     >
                       <div className="flex gap-3">
-                        <img
-                          src={line.product.image}
-                          alt={line.product.name}
-                          className="size-20 shrink-0 rounded-[6px] object-cover"
-                        />
+                        <div className="grid size-20 shrink-0 place-items-center overflow-hidden rounded-[6px] border border-white/10 bg-black/35">
+                          {line.customizations ? (
+                            <BurgerStackPreview selections={line.customizations} compact lastChanged={line.key} />
+                          ) : (
+                            <img
+                              src={line.product.image}
+                              alt={line.product.name}
+                              className="h-full w-full object-cover"
+                            />
+                          )}
+                        </div>
                         <div className="min-w-0 flex-1">
                           <div className="flex items-start justify-between gap-2">
                             <h3 className="text-sm font-black leading-tight text-white">{line.product.name}</h3>
@@ -93,24 +111,27 @@ export function CartDrawer() {
                             </button>
                           </div>
 
-                          <p className="mt-1 text-xs text-white/48">
-                            Extra cheese:{' '}
-                            <span className={line.extraCheese ? 'text-[#ffe1a0]' : 'text-white/55'}>
-                              {line.extraCheese ? `Yes (+${formatPriceRupee(EXTRA_CHEESE_PRICE)})` : 'No'}
-                            </span>
+                          <p className="mt-1 line-clamp-2 text-xs leading-5 text-white/48">
+                            {line.summary?.length
+                              ? line.summary.slice(0, 4).join(' · ')
+                              : line.extraCheese
+                                ? `Extra cheese (+${formatPriceRupee(EXTRA_CHEESE_PRICE)})`
+                                : line.product.description}
                           </p>
 
-                          <label className="mt-2 flex cursor-pointer items-center gap-2">
-                            <input
-                              type="checkbox"
-                              checked={line.extraCheese}
-                              onChange={(e) => setExtraCheese(line.key, e.target.checked)}
-                              className="size-4 rounded border-white/20 bg-black/40 accent-[#f0c76f]"
-                            />
-                            <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/55">
-                              Add extra cheese
-                            </span>
-                          </label>
+                          {!line.customizations ? (
+                            <label className="mt-2 flex cursor-pointer items-center gap-2">
+                              <input
+                                type="checkbox"
+                                checked={line.extraCheese}
+                                onChange={(e) => setExtraCheese(line.key, e.target.checked)}
+                                className="size-4 rounded border-white/20 bg-black/40 accent-[#f0c76f]"
+                              />
+                              <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/55">
+                                Add extra cheese
+                              </span>
+                            </label>
+                          ) : null}
 
                           <div className="mt-3 flex items-center justify-between">
                             <div className="flex items-center gap-1 rounded-full border border-white/12 bg-black/30 p-1">
@@ -140,9 +161,9 @@ export function CartDrawer() {
                           </div>
                         </div>
                       </div>
-                    </li>
+                    </motion.li>
                   ))}
-                </ul>
+                </motion.ul>
               )}
             </div>
 
@@ -155,6 +176,7 @@ export function CartDrawer() {
                 <div className="grid gap-2">
                   <button
                     type="button"
+                    onClick={goToCheckout}
                     className="w-full rounded-full border border-[#f0c76f]/50 bg-[#f0c76f] py-3.5 text-sm font-black uppercase tracking-[0.18em] text-[#130f08] shadow-glow transition hover:bg-[#ffe1a0]"
                   >
                     Checkout · {grandTotalLabel}
