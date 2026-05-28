@@ -1,14 +1,15 @@
-import { ArrowLeft, Menu as MenuIcon, ShoppingBag } from 'lucide-react';
+import { ArrowLeft, Menu as MenuIcon, ShoppingBag, SlidersHorizontal } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 
 export function TopBar({ navigate, variant = 'glass' }) {
   const isMenu = variant === 'menu';
+  const isBuild = variant === 'build';
   const { itemCount, toggleCart } = useCart();
 
   return (
     <div className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-4 py-4 sm:px-8 lg:px-12">
       <a
-        href="#/"
+        href="/"
         onClick={(e) => {
           e.preventDefault();
           navigate('/');
@@ -24,6 +25,20 @@ export function TopBar({ navigate, variant = 'glass' }) {
       </a>
 
       <div className="flex items-center gap-2 sm:gap-3">
+        {!isBuild ? (
+          <a
+            href="/build"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate('/build');
+            }}
+            className="group hidden items-center gap-2 rounded-full border border-white/12 bg-white/[0.055] px-4 py-3 text-xs font-bold uppercase tracking-[0.2em] text-white/76 backdrop-blur-xl transition duration-300 hover:border-[#f0c76f]/45 hover:text-[#ffe1a0] sm:inline-flex"
+          >
+            <SlidersHorizontal className="size-4" />
+            Build
+          </a>
+        ) : null}
+
         <button
           type="button"
           onClick={toggleCart}
@@ -40,15 +55,15 @@ export function TopBar({ navigate, variant = 'glass' }) {
         </button>
 
         <a
-          href={isMenu ? '#/' : '#/menu'}
+          href={isMenu || isBuild ? '/' : '/menu'}
           onClick={(e) => {
             e.preventDefault();
-            navigate(isMenu ? '/' : '/menu');
+            navigate(isMenu || isBuild ? '/' : '/menu');
           }}
           className="group inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.055] px-4 py-3 text-xs font-bold uppercase tracking-[0.2em] text-white/76 backdrop-blur-xl transition duration-300 hover:border-[#f0c76f]/45 hover:text-[#ffe1a0]"
         >
-          {isMenu ? <ArrowLeft className="size-4" /> : <MenuIcon className="size-4" />}
-          {isMenu ? 'Home' : 'Menu'}
+          {isMenu || isBuild ? <ArrowLeft className="size-4" /> : <MenuIcon className="size-4" />}
+          {isMenu || isBuild ? 'Home' : 'Menu'}
         </a>
       </div>
     </div>
