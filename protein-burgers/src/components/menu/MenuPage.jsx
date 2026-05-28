@@ -80,15 +80,18 @@ export function MenuPage({ navigate }) {
           </header>
 
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {activeCategory.items.map((item, index) => (
-              <ProductCard
-                key={item.name}
-                item={item}
-                index={index}
-                onSelect={openItem}
-                isBurger={activeCategory.title === 'Burgers'}
-              />
-            ))}
+            {activeCategory.items.map((item, index) => {
+              const itemWithCategory = { ...item, category: activeCategory.title };
+              return (
+                <ProductCard
+                  key={item.name}
+                  item={itemWithCategory}
+                  index={index}
+                  onSelect={openItem}
+                  isBurger={activeCategory.title === 'Burgers'}
+                />
+              );
+            })}
           </div>
         </section>
       </div>
