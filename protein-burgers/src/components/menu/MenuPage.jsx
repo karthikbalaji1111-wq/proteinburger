@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
-import { categories } from '../../data/catalog';
+import { categories, slugifyName } from '../../data/catalog';
 import { TopBar } from '../layout/TopBar';
 import { ProductCard } from './ProductCard';
 import { ProductDetailPanel } from './ProductDetailPanel';
@@ -13,6 +13,14 @@ export function MenuPage({ navigate }) {
     () => categories.find((category) => category.title === active) ?? categories[0],
     [active],
   );
+
+  const openItem = (item) => {
+    if (activeCategory.title === 'Burgers') {
+      navigate(`/menu/${slugifyName(item.name)}`);
+      return;
+    }
+    setSelectedItem(item);
+  };
 
   return (
     <div className="menu-page relative min-h-screen bg-[#030405]">
@@ -53,12 +61,22 @@ export function MenuPage({ navigate }) {
         </aside>
 
         <section className="min-w-0">
-          <header className="mb-8 border-b border-white/10 pb-8">
-            <p className="text-xs font-black uppercase tracking-[0.38em] text-[#f0c76f]">Full menu</p>
-            <h1 className="mt-3 font-display text-4xl font-black leading-none text-white sm:text-6xl">
-              {activeCategory.title}
-            </h1>
-            <p className="mt-4 max-w-xl text-base leading-7 text-white/60">{activeCategory.summary}</p>
+          <header className="mb-8 flex flex-col gap-6 border-b border-white/10 pb-8 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.38em] text-[#f0c76f]">Full menu</p>
+              <h1 className="mt-3 font-display text-4xl font-black leading-none text-white sm:text-6xl">
+                {activeCategory.title}
+              </h1>
+              <p className="mt-4 max-w-xl text-base leading-7 text-white/60">{activeCategory.summary}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => navigate('/build')}
+              className="inline-flex w-fit items-center gap-3 rounded-full border border-[#f0c76f]/45 bg-[#f0c76f]/12 px-5 py-3 text-xs font-black uppercase tracking-[0.18em] text-[#ffe1a0] transition hover:bg-[#f0c76f] hover:text-[#130f08]"
+            >
+              Build your own
+              <ArrowRight className="size-4" />
+            </button>
           </header>
 
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -67,7 +85,7 @@ export function MenuPage({ navigate }) {
                 key={item.name}
                 item={item}
                 index={index}
-                onSelect={setSelectedItem}
+                onSelect={openItem}
                 isBurger={activeCategory.title === 'Burgers'}
               />
             ))}
