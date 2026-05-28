@@ -28,9 +28,9 @@ export function MenuPage({ navigate }) {
 
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(214,65,53,0.12),transparent_30rem),radial-gradient(circle_at_86%_24%,rgba(240,199,111,0.1),transparent_28rem)]" />
 
-      <div className="menu-shell relative z-10 mx-auto grid max-w-[98rem] gap-7 px-4 pb-16 pt-28 sm:px-8 lg:grid-cols-[19rem_minmax(0,1fr)] lg:gap-12 lg:px-12 lg:pb-24">
+      <div className="menu-shell relative z-10 mx-auto grid max-w-[104rem] gap-7 px-4 pb-16 pt-28 sm:px-8 lg:grid-cols-[21rem_minmax(0,1fr)] lg:gap-14 lg:px-12 lg:pb-24">
         <aside className="lg:sticky lg:top-28 lg:self-start">
-          <div className="rounded-[8px] border border-white/12 bg-black/40 p-4 shadow-glass backdrop-blur-2xl">
+          <div className="rounded-[8px] border border-white/12 bg-black/52 p-4 shadow-glass backdrop-blur-3xl">
             <p className="mb-4 px-3 text-xs font-black uppercase tracking-[0.28em] text-[#f0c76f]">Categories</p>
             <div className="flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible lg:pb-0">
               {categories.map((category) => {
