@@ -34,7 +34,7 @@ function AppRoutes() {
     };
 
     window.lenis?.scrollTo?.(0, { immediate: true });
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo(0, 0);
     refresh();
     requestAnimationFrame(refresh);
     const t = window.setTimeout(refresh, 200);
