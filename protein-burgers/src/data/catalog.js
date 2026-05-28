@@ -287,6 +287,332 @@ export const categories = [
       },
     ],
   },
+  {
+    title: 'Fries',
+    eyebrow: 'Crisp sides',
+    summary: 'Golden sides finished with clean oils, sharp seasoning, and delivery-friendly crunch.',
+    items: [
+      {
+        name: 'Peri Peri Protein Fries',
+        description: 'Crisp fries tossed with peri peri dust and a high-protein garlic dip.',
+        protein: '12g',
+        calories: '340 kcal',
+        price: '₹129',
+        image: asset('/food/sides-sheet.png'),
+        ...baseNutrition,
+        carbs: '44g',
+        fats: '11g',
+        sauces: ['Peri peri sauce', 'Garlic herb sauce'],
+      },
+      {
+        name: 'Smoky BBQ Loaded Fries',
+        description: 'Charred spice fries with smoked BBQ drizzle, onion crunch, and cheese melt.',
+        protein: '16g',
+        calories: '430 kcal',
+        price: '₹169',
+        image: asset('/food/sides-sheet.png'),
+        ...baseNutrition,
+        carbs: '48g',
+        fats: '17g',
+        sauces: ['Smoky BBQ sauce'],
+      },
+      {
+        name: 'Garlic Herb Sweet Fries',
+        description: 'Sweet potato fries finished with garlic herbs and a cool yoghurt dip.',
+        protein: '10g',
+        calories: '310 kcal',
+        price: '₹149',
+        image: asset('/food/sides-sheet.png'),
+        ...baseNutrition,
+        carbs: '39g',
+        fats: '10g',
+        sauces: ['Garlic herb sauce'],
+      },
+    ],
+  },
+  {
+    title: 'Drinks',
+    eyebrow: 'Cold recovery',
+    summary: 'Low-sugar refreshers and protein coolers designed to pair with rich grilled flavors.',
+    items: [
+      {
+        name: 'Citrus Electrolyte Fizz',
+        description: 'Sparkling lime, mineral salts, and a clean citrus finish.',
+        protein: '0g',
+        calories: '45 kcal',
+        price: '₹89',
+        image: asset('/food/sides-sheet.png'),
+        ...baseNutrition,
+        carbs: '11g',
+        fats: '0g',
+        ingredients: ['Sparkling water', 'Lime', 'Electrolytes', 'Mint'],
+      },
+      {
+        name: 'Cold Brew Protein Shake',
+        description: 'Coffee, milk protein, cocoa notes, and a smooth post-workout texture.',
+        protein: '24g',
+        calories: '210 kcal',
+        price: '₹169',
+        image: asset('/food/sides-sheet.png'),
+        ...baseNutrition,
+        carbs: '18g',
+        fats: '5g',
+        ingredients: ['Cold brew', 'Milk protein', 'Cocoa', 'Date sweetness'],
+      },
+      {
+        name: 'Berry Recovery Cooler',
+        description: 'Berry blend, coconut water, and light protein for a clean finish.',
+        protein: '12g',
+        calories: '140 kcal',
+        price: '₹139',
+        image: asset('/food/sides-sheet.png'),
+        ...baseNutrition,
+        carbs: '22g',
+        fats: '2g',
+        ingredients: ['Berry blend', 'Coconut water', 'Whey isolate', 'Lemon'],
+      },
+    ],
+  },
+  {
+    title: 'Desserts',
+    eyebrow: 'Controlled sweet',
+    summary: 'Small-batch desserts with richer texture, measured portions, and cleaner sweetness.',
+    items: [
+      {
+        name: 'Dark Chocolate Protein Brownie',
+        description: 'Fudgy cocoa brownie with whey, almonds, and a glossy chocolate cap.',
+        protein: '18g',
+        calories: '290 kcal',
+        price: '₹149',
+        image: asset('/food/sides-sheet.png'),
+        ...baseNutrition,
+        carbs: '26g',
+        fats: '12g',
+        ingredients: ['Dark cocoa', 'Whey protein', 'Almonds', 'Jaggery'],
+      },
+      {
+        name: 'Greek Yogurt Cheesecake Cup',
+        description: 'Velvet yogurt cream, toasted crumb, berry compote, and protein lift.',
+        protein: '16g',
+        calories: '250 kcal',
+        price: '₹159',
+        image: asset('/food/sides-sheet.png'),
+        ...baseNutrition,
+        carbs: '24g',
+        fats: '9g',
+        ingredients: ['Greek yogurt', 'Cream cheese', 'Berry compote', 'Oat crumb'],
+      },
+      {
+        name: 'Cinnamon Protein Churro Bites',
+        description: 'Air-crisped bites with cinnamon dust and chocolate protein dip.',
+        protein: '14g',
+        calories: '275 kcal',
+        price: '₹139',
+        image: asset('/food/sides-sheet.png'),
+        ...baseNutrition,
+        carbs: '32g',
+        fats: '8g',
+        ingredients: ['Wheat dough', 'Cinnamon', 'Protein dip', 'Rice bran oil'],
+      },
+    ],
+  },
+  {
+    title: 'Combo Meals',
+    eyebrow: 'Built sets',
+    summary: 'Burger, side, and drink pairings with automatic bundle value and balanced macros.',
+    items: [
+      {
+        name: 'Athlete Recovery Combo',
+        description: 'Grilled Chicken Protein Burger with peri peri fries and electrolyte fizz.',
+        protein: '54g',
+        calories: '945 kcal',
+        price: '₹399',
+        image: asset('/food/grilled-chicken-protein-burger.webp'),
+        ...baseNutrition,
+        carbs: '83g',
+        fats: '25g',
+        benefits: ['Combo discount', 'Recovery-focused', 'No palm oil'],
+        combo: true,
+      },
+      {
+        name: 'Paneer Power Combo',
+        description: 'Mexicana Paneer Burger, garlic sweet fries, and berry recovery cooler.',
+        protein: '56g',
+        calories: '970 kcal',
+        price: '₹389',
+        image: asset('/food/mexicana-paneer-burger.webp'),
+        ...baseNutrition,
+        carbs: '95g',
+        fats: '30g',
+        benefits: ['Vegetarian protein', 'Combo discount', 'Fresh prep'],
+        combo: true,
+      },
+      {
+        name: 'Double Beast Combo',
+        description: 'Double Protein Beast Burger, loaded fries, and cold brew protein shake.',
+        protein: '102g',
+        calories: '1420 kcal',
+        price: '₹599',
+        image: asset('/food/double-protein-beast-burger.webp'),
+        ...baseNutrition,
+        carbs: '104g',
+        fats: '44g',
+        benefits: ['Maximum protein', 'Combo discount', 'Post-workout fuel'],
+        combo: true,
+      },
+    ],
+  },
+];
+
+export function slugifyName(name) {
+  return name
+    .toLowerCase()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+export const allProducts = categories.flatMap((category) =>
+  category.items.map((item) => ({
+    ...item,
+    slug: slugifyName(item.name),
+    category: category.title,
+  })),
+);
+
+export const burgerProducts = allProducts.filter((item) => item.category === 'Burgers');
+
+export function findProductBySlug(slug) {
+  return allProducts.find((item) => item.slug === slug);
+}
+
+export const customizationGroups = [
+  {
+    id: 'bread',
+    label: 'Bread type',
+    type: 'single',
+    options: [
+      { id: 'brioche', name: 'Brioche bun', price: 0, note: 'Glossy, buttery lift' },
+      { id: 'sesame', name: 'Sesame bun', price: 10, note: 'Classic toasted aroma' },
+      { id: 'potato', name: 'Potato bun', price: 15, note: 'Soft premium cushion' },
+      { id: 'whole-wheat', name: 'Whole wheat bun', price: 20, note: 'Higher fiber bite' },
+      { id: 'pretzel', name: 'Pretzel bun', price: 30, note: 'Dark crust, deep chew' },
+    ],
+  },
+  {
+    id: 'cheese',
+    label: 'Cheese',
+    type: 'multi',
+    options: [
+      { id: 'cheddar', name: 'Cheddar', price: 25, note: 'Sharp melt' },
+      { id: 'mozzarella', name: 'Mozzarella', price: 25, note: 'Stretchy pull' },
+      { id: 'parmesan', name: 'Parmesan', price: 30, note: 'Nutty finish' },
+      { id: 'gouda', name: 'Gouda', price: 35, note: 'Smoked cream' },
+      { id: 'swiss', name: 'Swiss', price: 30, note: 'Mellow melt' },
+      { id: 'pepper-jack', name: 'Pepper jack', price: 35, note: 'Spiced heat' },
+    ],
+  },
+  {
+    id: 'sauces',
+    label: 'Sauces',
+    type: 'multi',
+    options: [
+      { id: 'chipotle-mayo', name: 'Chipotle mayo', price: 18, note: 'Smoked chilli cream' },
+      { id: 'spicy-mayo', name: 'Spicy mayo', price: 18, note: 'Clean heat' },
+      { id: 'garlic-aioli', name: 'Garlic aioli', price: 20, note: 'Roasted depth' },
+      { id: 'bbq', name: 'BBQ sauce', price: 20, note: 'Charred sweet smoke' },
+      { id: 'peri-peri', name: 'Peri peri', price: 20, note: 'Citrus fire' },
+      { id: 'ranch', name: 'Ranch', price: 18, note: 'Herb-cool balance' },
+      { id: 'mustard', name: 'Mustard', price: 12, note: 'Sharp snap' },
+    ],
+  },
+  {
+    id: 'patty',
+    label: 'Patty type',
+    type: 'single',
+    options: [
+      { id: 'beef', name: 'Beef', price: 90, note: 'Rich flame finish', protein: '36g' },
+      { id: 'chicken', name: 'Chicken', price: 70, note: 'Tender classic', protein: '34g' },
+      { id: 'crispy-chicken', name: 'Crispy chicken', price: 85, note: 'Crunch layer', protein: '32g' },
+      { id: 'grilled-chicken', name: 'Grilled chicken', price: 80, note: 'Lean performance', protein: '42g' },
+      { id: 'paneer', name: 'Paneer', price: 65, note: 'Charred vegetarian', protein: '31g' },
+      { id: 'vegan', name: 'Vegan patty', price: 75, note: 'Plant-powered', protein: '24g' },
+    ],
+  },
+  {
+    id: 'oil',
+    label: 'Oil finish',
+    type: 'single',
+    options: [
+      { id: 'butter-grilled', name: 'Butter grilled', price: 18, note: 'Classic golden crust' },
+      { id: 'olive-oil', name: 'Olive oil', price: 22, note: 'Cleaner aromatic finish' },
+      { id: 'garlic-butter', name: 'Garlic butter', price: 25, note: 'Roasted richness' },
+      { id: 'smoked-oil', name: 'Smoked oil', price: 24, note: 'Cinematic char' },
+    ],
+  },
+  {
+    id: 'addons',
+    label: 'Add-ons',
+    type: 'multi',
+    options: [
+      { id: 'extra-cheese', name: 'Extra cheese', price: 25, note: 'Second molten layer' },
+      { id: 'double-patty', name: 'Double patty', price: 95, note: 'Protein jump' },
+      { id: 'jalapenos', name: 'Jalapenos', price: 15, note: 'Green heat' },
+      { id: 'olives', name: 'Olives', price: 15, note: 'Briny bite' },
+      { id: 'caramelized-onions', name: 'Caramelized onions', price: 20, note: 'Slow sweetness' },
+      { id: 'mushrooms', name: 'Mushrooms', price: 25, note: 'Umami sear' },
+      { id: 'lettuce', name: 'Lettuce', price: 10, note: 'Fresh crunch' },
+      { id: 'bacon', name: 'Bacon', price: 60, note: 'Smoked crisp' },
+      { id: 'fried-egg', name: 'Fried egg', price: 35, note: 'Golden yolk cap' },
+    ],
+  },
+];
+
+export const defaultCustomization = {
+  bread: 'brioche',
+  cheese: ['cheddar'],
+  sauces: ['chipotle-mayo'],
+  patty: 'grilled-chicken',
+  oil: 'olive-oil',
+  addons: ['lettuce'],
+};
+
+export const builderBaseProduct = {
+  name: 'Build Your Own Protein Burger',
+  description: 'A made-to-order stack with your bread, protein, sauce, oil finish, and add-ons.',
+  protein: '42g+',
+  calories: 'Custom',
+  price: '₹149',
+  image: asset('/food/grilled-chicken-protein-burger.webp'),
+  carbs: 'Custom',
+  fats: 'Custom',
+  ingredients: ['Custom bun', 'Selected patty', 'Fresh vegetables', 'Signature sauces'],
+  sauces: ['Custom sauces'],
+  benefits: ['Live pricing', 'Built to macros', 'No palm oil'],
+  category: 'Burgers',
+  slug: 'build-your-own-protein-burger',
+  custom: true,
+};
+
+export const reviews = [
+  {
+    name: 'Aarav S.',
+    rating: 5,
+    focus: 'Post-workout order',
+    text: 'The grilled chicken build feels filling without the usual heavy fast-food crash.',
+  },
+  {
+    name: 'Meera K.',
+    rating: 5,
+    focus: 'Paneer stack',
+    text: 'Paneer is charred properly, sauces are bold, and the custom add-ons feel premium.',
+  },
+  {
+    name: 'Dev R.',
+    rating: 4,
+    focus: 'Delivery combo',
+    text: 'Great macros for a burger meal. The cold brew shake with a combo is the move.',
+  },
 ];
 
 export const philosophyStats = [
