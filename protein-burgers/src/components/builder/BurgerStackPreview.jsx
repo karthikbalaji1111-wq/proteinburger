@@ -20,11 +20,11 @@ function Layer({ children, top, z, changedKey, className = '' }) {
   return (
     <motion.div
       key={changedKey}
-      initial={{ opacity: 0, y: -58, scale: 0.92, rotate: -3 }}
-      animate={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
-      exit={{ opacity: 0, y: 22, scale: 0.94 }}
+      initial={{ opacity: 0, x: '-50%', y: -58, scale: 0.92, rotate: -3 }}
+      animate={{ opacity: 1, x: '-50%', y: 0, scale: 1, rotate: 0 }}
+      exit={{ opacity: 0, x: '-50%', y: 22, scale: 0.94 }}
       transition={{ duration: 0.52, ease: [0.22, 1, 0.36, 1] }}
-      className={`absolute left-1/2 w-[82%] -translate-x-1/2 ${className}`}
+      className={`absolute left-1/2 w-[82%] ${className}`}
       style={{ top, zIndex: z, willChange: 'transform, opacity' }}
     >
       {children}
