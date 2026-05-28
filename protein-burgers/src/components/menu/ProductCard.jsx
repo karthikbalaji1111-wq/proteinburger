@@ -147,61 +147,6 @@ export function ProductCard({ item, index = 0, onSelect, isBurger = false }) {
           </button>
         </div>
 
-        {false ? (
-          <div className="mt-5 space-y-4 border-t border-white/10 pt-5" onClick={(e) => e.stopPropagation()}>
-            <label className="flex cursor-pointer items-center justify-between gap-3 rounded-[8px] border border-white/10 bg-black/25 px-3 py-2.5">
-              <span className="flex items-center gap-2.5">
-                <input
-                  type="checkbox"
-                  checked={extraCheese}
-                  onChange={(e) => setExtraCheese(e.target.checked)}
-                  className="size-4 rounded border-white/20 bg-black/40 accent-[#f0c76f]"
-                />
-                <span className="text-xs font-bold uppercase tracking-[0.14em] text-white/65">
-                  Extra cheese
-                </span>
-              </span>
-              <span className="text-xs font-black text-[#ffe1a0]">+{formatPriceRupee(EXTRA_CHEESE_PRICE)}</span>
-            </label>
-
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-white/45">Quantity</span>
-              <div className="flex items-center gap-1 rounded-full border border-white/12 bg-black/30 p-1">
-                <button
-                  type="button"
-                  onClick={decreaseQty}
-                  className="grid size-8 place-items-center rounded-full text-white/70 transition hover:bg-white/10 hover:text-white"
-                  aria-label="Decrease quantity"
-                >
-                  <Minus className="size-4" />
-                </button>
-                <span className="min-w-[2rem] text-center text-sm font-black text-[#ffe1a0]">{quantity}</span>
-                <button
-                  type="button"
-                  onClick={increaseQty}
-                  className="grid size-8 place-items-center rounded-full text-white/70 transition hover:bg-white/10 hover:text-white"
-                  aria-label="Increase quantity"
-                >
-                  <Plus className="size-4" />
-                </button>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between text-xs">
-              <span className="font-semibold uppercase tracking-[0.14em] text-white/40">Item total</span>
-              <span className="font-black text-[#ffe1a0]">{formatPriceRupee(previewTotal)}</span>
-            </div>
-
-            <button
-              type="button"
-              onClick={handleAddToCart}
-              className="flex w-full items-center justify-center gap-2 rounded-full border border-[#f0c76f]/50 bg-[#f0c76f] py-3.5 text-xs font-black uppercase tracking-[0.18em] text-[#130f08] shadow-glow transition hover:bg-[#ffe1a0]"
-            >
-              <ShoppingCart className="size-4" strokeWidth={2.5} />
-              Add to cart
-            </button>
-          </div>
-        ) : null}
       </div>
     </motion.article>
   );
