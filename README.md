@@ -9,6 +9,13 @@ https://proteinburger-optc-7euhwdiho-karthik-balaji-s-projects.vercel.app
 A premium modern burger-ordering web application focused on interactive UI/UX, dynamic customization, smooth animations, responsive frontend engineering, and the practical technical use of AI-assisted development workflows.
 
 ---
+## Website Preview
+
+![Home Page](./screenshots/home.png)
+
+![Burger Section](./screenshots/burgers.png)
+
+![Cart](./screenshots/cart.png)
 
 # Project Overview
 
